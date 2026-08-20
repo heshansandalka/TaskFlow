@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply font-body antialiased;
+  @apply bg-ink-900 text-mist-100;
+}
+
+body.light {
+  @apply bg-mist-50 text-ink-900;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+}
+
+/* Thin, quiet scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 143, 166, 0.25);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 143, 166, 0.4);
+}
+
+@layer components {
+  /* Frosted glass surface — the signature material of the UI */
+  .glass {
+    @apply bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] shadow-glass;
+  }
+  .light .glass {
+    @apply bg-white/70 border-black/[0.06] shadow-[0_8px_32px_rgba(30,32,60,0.08)];
+  }
+
+  .glass-panel {
+    @apply glass rounded-xl2;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gradient
+    px-4 py-2.5 font-body font-semibold text-white shadow-glow-brand
+    transition-transform duration-150 ease-out
+    hover:-translate-y-0.5 active:translate-y-0
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400
+    disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-body font-medium
+    text-mist-100/80 hover:text-mist-100 hover:bg-white/[0.06]
+    transition-colors duration-150
+    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400;
+  }
+  .light .btn-ghost {
+    @apply text-ink-700/80 hover:text-ink-900 hover:bg-black/[0.04];
+  }
+
+  .input-field {
+    @apply w-full rounded-xl bg-white/[0.05] border border-white/[0.1] px-4 py-2.5
+    text-mist-100 placeholder:text-mist-100/40
+    focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400
+    transition-colors duration-150;
+  }
+  .light .input-field {
+    @apply bg-white border-black/10 text-ink-900 placeholder:text-ink-700/40;
+  }
+
+  .light .toast-text {
+    @apply text-ink-800;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

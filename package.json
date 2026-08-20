@@ -1,0 +1,10 @@
+{
+  "name": "taskflow",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix taskflow-frontend run dev",
+    "server": "npm --prefix taskflow-frontend run server",
+    "postinstall": "npm --prefix taskflow-frontend install && npm --prefix taskflow-frontend/server install"
+  }
+}
