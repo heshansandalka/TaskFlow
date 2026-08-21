@@ -175,23 +175,35 @@ export default function BoardPage() {
   }, [tasksByList, search, activeFilters]);
 
   // --- Task/list mutations ----------------------------------------------
-  const handleAddTask = async (listId, title) => {
-    const optimistic = { _id: `tmp-${Date.now()}`, title, labels: [], assignees: [], checklist: [] };
-    setTasksByList((prev) => ({ ...prev, [listId]: [...prev[listId], optimistic] }));
-    try {
-      const task = await tasksApi.create(listId, { title });
-      setTasksByList((prev) => ({
+ const handleAddTask = async (listId, title) => {
+  const optimistic = { _id: `tmp-${Date.now()}`, title, labels: [], assignees: [], checklist: [] };
+  setTasksByList((prev) => ({ ...prev, [listId]: [...(prev[listId] || []), optimistic] }));
+  try {
+    const task = await tasksApi.create(listId, { title });
+    setTasksByList((prev) => {
+      const current = prev[listId] || [];
+      // real task  list  (real‑time event add)
+      if (current.some(t => t._id === task._id)) {
+        // optimistic
+        return {
+          ...prev,
+          [listId]: current.filter(t => t._id !== optimistic._id)
+        };
+      }
+      //  optimistic  real  replace 
+      return {
         ...prev,
-        [listId]: prev[listId].map((t) => (t._id === optimistic._id ? task : t)),
-      }));
-    } catch {
-      notify("Couldn't add that card — try again.", { type: "error" });
-      setTasksByList((prev) => ({
-        ...prev,
-        [listId]: prev[listId].filter((t) => t._id !== optimistic._id),
-      }));
-    }
-  };
+        [listId]: current.map((t) => (t._id === optimistic._id ? task : t))
+      };
+    });
+  } catch {
+    notify("Couldn't add that card — try again.", { type: "error" });
+    setTasksByList((prev) => ({
+      ...prev,
+      [listId]: (prev[listId] || []).filter((t) => t._id !== optimistic._id),
+    }));
+  }
+};
 
   const handleTaskUpdated = (task) => {
     setTasksByList((prev) => {
