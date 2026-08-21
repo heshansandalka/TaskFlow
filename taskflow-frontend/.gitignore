@@ -1,4 +1,15 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment variables (Sensitive Data)
 .env
-*.local
+.env.*
+!.env.example
+
+# Logs & OS Files
+*.log
+.DS_Store
