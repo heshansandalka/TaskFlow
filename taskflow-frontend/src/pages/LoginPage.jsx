@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Couldn't sign you in. Check your details.");
     } finally {
@@ -38,7 +38,7 @@ export default function LoginPage() {
 
       // Use access_token as credential (backend will use userinfo endpoint)
       await loginWithGoogle(tokenResponse.access_token);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Google sign-in failed. Please try again.");
     } finally {
